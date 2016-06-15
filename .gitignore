@@ -12,5 +12,6 @@
 hs_err_pid*
 
 #
-build/
-nbproject/private/
+webchatapp/build/
+webchatapp/nbproject/private/
+webchatapp/nbproject/genfiles.properties
