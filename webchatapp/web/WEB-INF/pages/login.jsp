@@ -42,51 +42,42 @@
                       class="form-horizontal">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <sec:authorize access="isAuthenticated()">
-                                <h1>Hello, <sec:authentication property="principal.userName" />!</h1>
-                            </sec:authorize>
-                            <sec:authorize access="isAnonymous()">
-                                <h1>Hello, Guest!</h1>
-                            </sec:authorize>
+                            <h1>${login_greetings}</h1>
                         </div>
                         <div class="modal-body">
                             <div class="login-card">
                                 <div class="login-form">
                                     <c:if test="${param.error != null}">
                                         <div class="alert alert-danger">
-                                            <p>Invalid username and password.</p>
+                                            <p><spring:message code="login.lbl.error"/></p>
                                         </div>
                                     </c:if>
                                     <c:if test="${param.logout != null}">
                                         <div class="alert alert-success">
-                                            <p>You have been logged out successfully.</p>
+                                            <p><spring:message code="login.lbl.success.logout"/></p>
                                         </div>
                                     </c:if>
-                                    <sec:authorize access="isAuthenticated()">
-                                        <h2>Whom do you want be?</h2>
-                                    </sec:authorize>
-                                    <sec:authorize access="isAnonymous()">
-                                        <h2>What's your name?</h2>
-                                    </sec:authorize>
+                                    <h2><spring:message code="login.lbl.proposal"/></h2>
                                     <div class="input-group input-sm">
                                         <label class="input-group-addon" for="username">
                                             <i class="fa fa-user"></i>
                                         </label>
                                         <input type="text" class="form-control"
                                                id="username" name="ssoId"
-                                               placeholder="Enter Username" required>
+                                               placeholder="<spring:message code="login.inp.namehint"/>" 
+                                               required>
                                     </div>
                                     <input type="hidden" class="form-control"
-                                           value="ignored"
-                                           id="password" name="password"
-                                           placeholder="Enter Password" required>
+                                           required value="ignored"
+                                           id="password" name="password">
                                     <input type="hidden" name="${_csrf.parameterName}"
                                            value="${_csrf.token}" />
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <input type="submit" value="Log in"
+                            <input type="submit"
+                                   value="<spring:message code="login.btn.login"/>"
                                    class="btn btn-block btn-primary btn-default">
                         </div>
                     </div>
