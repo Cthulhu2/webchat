@@ -20,8 +20,6 @@
               href="<spring:url value="/res/css/bootstrap.min.css" />" />
         <link rel="stylesheet" type="text/css"
               href="<spring:url value="/res/css/bootstrap-theme.min.css" />" />
-        <link rel="stylesheet" type="text/css"
-              href="<spring:url value="/res/css/font-awesome.min.css" />" />
     </head>
     <body>
         <h1>Hello, <sec:authentication property="principal.userName" />!</h1>

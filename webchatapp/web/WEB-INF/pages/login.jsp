@@ -21,8 +21,6 @@
               href="<spring:url value="/res/css/bootstrap.min.css" />" />
         <link rel="stylesheet" type="text/css"
               href="<spring:url value="/res/css/bootstrap-theme.min.css" />" />
-        <link rel="stylesheet" type="text/css"
-              href="<spring:url value="/res/css/font-awesome.min.css" />" />
         <script type="text/javascript">
             $(window).load(function () {
                 $('#login-modal').modal({
@@ -60,7 +58,7 @@
                                     <h2><spring:message code="login.lbl.proposal"/></h2>
                                     <div class="input-group input-sm">
                                         <label class="input-group-addon" for="username">
-                                            <i class="fa fa-user"></i>
+                                            <i class="glyphicon glyphicon-user"></i>
                                         </label>
                                         <input type="text" class="form-control"
                                                id="username" name="ssoId"
