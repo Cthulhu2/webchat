@@ -62,7 +62,7 @@
                                         </label>
                                         <input type="text" class="form-control"
                                                id="username" name="ssoId"
-                                               placeholder="<spring:message code="login.inp.namehint"/>" 
+                                               placeholder="<spring:message code="login.hint.name"/>" 
                                                required>
                                     </div>
                                     <input type="hidden" class="form-control"
