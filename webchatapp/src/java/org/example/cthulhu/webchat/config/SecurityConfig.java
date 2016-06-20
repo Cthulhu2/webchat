@@ -11,6 +11,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.security.web.csrf.CsrfTokenRepository;
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 /**
@@ -57,8 +60,16 @@ public class SecurityConfig
                 .logoutSuccessUrl("/login?logout")
                 .deleteCookies("JSESSIONID")
                 .invalidateHttpSession(true);
-        http.csrf();
+        http.csrf()
+                .csrfTokenRepository(csrfTokenRepository());
         http.exceptionHandling()
                 .accessDeniedPage("/login?error");
+        http.addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class);
+    }
+
+    private CsrfTokenRepository csrfTokenRepository() {
+        HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
+        repository.setHeaderName("X-XSRF-TOKEN");
+        return repository;
     }
 }
