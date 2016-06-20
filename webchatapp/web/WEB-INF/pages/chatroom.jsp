@@ -22,9 +22,12 @@
               href="<spring:url value="/res/css/bootstrap-theme.min.css" />" />
         <link rel="stylesheet" type="text/css"
               href="<spring:url value="/res/css/chatroom.css" />" />
+        <script src="<spring:url value="/res/js/chatroom/app.js" />"></script>
+        <script src="<spring:url value="/res/js/chatroom/controller.js" />"></script>
+        <script src="<spring:url value="/res/js/chatroom/service.js" />"></script>
     </head>
-    <body>
-        <div class="container">
+    <body ng-app="chatroomApp">
+        <div class="container" ng-controller="ChatroomController as ctrl">
             <div class="row flex-row">
                 <div class="col-md-3">
                     <div class="panel panel-primary flex-col">
@@ -38,15 +41,23 @@
                         </div>
                         <div class="panel-body flex-grow">
                             <div class="pre-scrollable chat-room">
-                                <samp></samp>
+                                <div ng-repeat="m in ctrl.messages">
+                                    [<span ng-bind="m.date"></span>]
+                                    <b><span ng-bind="m.userName"></span>:</b>
+                                    <span ng-bind="m.text"></span>
+                                    <br/>
+                                </div>
                             </div>
                         </div>
                         <div class="panel-footer">
                             <div class="row">
-                                <button class="col-md-1 col-md-push-11 btn btn-primary btn-lg">
+                                <button class="col-md-1 col-md-push-11 btn btn-primary btn-lg"
+                                        ng-click="ctrl.sendMessage()">
                                     <spring:message code="chatroom.btn.send" />
                                 </button>
-                                <textarea class="col-md-11 col-md-pull-1 panel-body"
+                                <textarea id="textareaMessage"
+                                          class="col-md-11 col-md-pull-1 panel-body"
+                                          ng-model="textareaMessageText"
                                           placeholder="<spring:message code="chatroom.hint.message" />"
                                           rows="1"></textarea>  
                             </div>
