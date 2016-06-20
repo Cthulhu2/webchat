@@ -16,14 +16,17 @@ import org.springframework.stereotype.Repository;
 public class MessageRepository {
 
     public static final int MESSAGE_LIMIT = 20;
+    private int idSequence = 0;
     
     private final List<Message> messageList = new ArrayList<>(MESSAGE_LIMIT * 2);
     
-    public void add(Message message) {
+    public synchronized void add(Message message) {
         if (message == null) {
             throw new IllegalArgumentException("message is null");
         }
         if (!messageList.contains(message)) {
+            idSequence++;
+            message.setId(idSequence);
             messageList.add(message);
             if (messageList.size() >= MESSAGE_LIMIT * 2) {
                 messageList.subList(0, MESSAGE_LIMIT - 1).clear();
@@ -31,7 +34,7 @@ public class MessageRepository {
         }
     }
     
-    public void remove(Message message) {
+    public synchronized void remove(Message message) {
         if (message == null) {
             throw new IllegalArgumentException("message is null");
         }
@@ -40,7 +43,7 @@ public class MessageRepository {
         }
     }
     
-    public List<Message> findAll() {
+    public synchronized List<Message> findAll() {
         int count = Math.min(messageList.size(), MESSAGE_LIMIT);
         return Collections.unmodifiableList(messageList.subList(
                 messageList.size() - count,

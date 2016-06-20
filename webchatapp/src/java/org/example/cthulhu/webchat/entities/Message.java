@@ -11,6 +11,7 @@ import java.util.Objects;
 public class Message
         implements Serializable {
     
+    private int id;
     private String userName;
     private Date date;
     private String text;
@@ -19,6 +20,14 @@ public class Message
         this.userName = userName;
         this.date = date;
         this.text = text;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
     
     public String getUserName() {
