@@ -7,6 +7,7 @@ import org.example.cthulhu.webchat.entities.Message;
 import org.example.cthulhu.webchat.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -25,6 +26,8 @@ public class ChatRoomController {
     
     @Autowired
     private MessageRepository messages;
+    @Autowired
+    private SimpMessagingTemplate websocketMessaging;
     
     @RequestMapping(value={"/chatroom"})
     public String chatRoom() {
@@ -39,10 +42,11 @@ public class ChatRoomController {
 
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(value="/chatroom/send", method=RequestMethod.POST)
-    public void sendMessage(@RequestBody String message) {
+    public void sendMessage(@RequestBody String text) {
         String username = ((User)SecurityContextHolder.getContext()
                 .getAuthentication().getPrincipal()).getUserName();
-        messages.add(new Message(username, new Date(), message));
+        Message message = messages.add(new Message(username, new Date(), text));
+        websocketMessaging.convertAndSend("/topic/chat", message);
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -64,6 +68,7 @@ public class ChatRoomController {
         }
         if (mDel != null) {
             messages.remove(mDel);
+            websocketMessaging.convertAndSend("/topic/chat", mDel.getId());
         }
     }
 }

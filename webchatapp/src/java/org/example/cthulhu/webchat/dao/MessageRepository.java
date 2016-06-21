@@ -20,7 +20,7 @@ public class MessageRepository {
     
     private final List<Message> messageList = new ArrayList<>(MESSAGE_LIMIT * 2);
     
-    public synchronized void add(Message message) {
+    public synchronized Message add(Message message) {
         if (message == null) {
             throw new IllegalArgumentException("message is null");
         }
@@ -32,6 +32,7 @@ public class MessageRepository {
                 messageList.subList(0, MESSAGE_LIMIT - 1).clear();
             }
         }
+        return message;
     }
     
     public synchronized void remove(Message message) {
