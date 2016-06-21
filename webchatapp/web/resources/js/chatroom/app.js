@@ -1,4 +1,5 @@
 'use strict';
  
-var App = angular.module('chatroomApp',[]);
-
+var App = angular.module('chatroomApp',[
+    'luegg.directives'
+]);

@@ -2,8 +2,10 @@ package org.example.cthulhu.webchat.util;
 
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.MessageSource;
+
 /**
- *
+ * Spring i18n messages util class. <i>Not chat-messages</i>
+ * 
  * @author Cthulhu
  */
 public class Messages {
