@@ -1,10 +1,9 @@
 'use strict';
-
-App.controller('ChatroomController', ['$scope', 'ChatroomService', function ($scope, ChatroomService) {
+App.controller('ChatroomController', ['$scope', 'ChatroomService', 'ChatService',
+    function ($scope, ChatroomService, ChatService) {
         var self = this;
         self.messages = [];
         $scope.textareaMessageText = "";
-
         self.fetchAllMessages = function () {
             ChatroomService.fetchAllMessages()
                     .then(
@@ -16,7 +15,6 @@ App.controller('ChatroomController', ['$scope', 'ChatroomService', function ($sc
                             }
                     );
         };
-
         self.sendMessage = function () {
             ChatroomService.sendMessage($scope.textareaMessageText)
                     .then(
@@ -28,7 +26,6 @@ App.controller('ChatroomController', ['$scope', 'ChatroomService', function ($sc
                             }
                     );
         };
-
         self.deleteMessage = function (id) {
             ChatroomService.deleteMessage(id)
                     .then(
@@ -37,5 +34,8 @@ App.controller('ChatroomController', ['$scope', 'ChatroomService', function ($sc
                             }
                     );
         };
-
+        self.fetchAllMessages();
+        ChatService.receive().then(null, null, function (message) {
+            self.messages.push(message);
+        });
     }]);
