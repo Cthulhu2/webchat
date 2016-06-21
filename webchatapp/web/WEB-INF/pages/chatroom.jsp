@@ -14,6 +14,8 @@
         <title>JSP ChatRoom Page</title>
 
         <script src="<spring:url value="/res/js/angular/1.5.6/angular.min.js" />"></script>
+        <script src="<spring:url value="/res/js/sockjs/sockjs-0.3.4.js" />"></script>
+        <script src="<spring:url value="/res/js/stomp/2.3.3/stomp.min.js" />"></script>
         <script src="<spring:url value="/res/js/jquery/jquery-1.12.4.min.js" />"></script>
         <script src="<spring:url value="/res/js/bootstrap/3.3.6/bootstrap.min.js" />"></script>
         <link rel="stylesheet" type="text/css"
