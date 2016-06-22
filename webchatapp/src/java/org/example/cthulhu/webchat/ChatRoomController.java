@@ -2,8 +2,8 @@ package org.example.cthulhu.webchat;
 
 import java.util.Date;
 import java.util.List;
-import org.example.cthulhu.webchat.dao.MessageRepository;
-import org.example.cthulhu.webchat.entities.Message;
+import org.example.cthulhu.webchat.dao.ChatMessageRepository;
+import org.example.cthulhu.webchat.entities.ChatMessage;
 import org.example.cthulhu.webchat.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class ChatRoomController {
     
     @Autowired
-    private MessageRepository messages;
+    private ChatMessageRepository messages;
     @Autowired
     private SimpMessagingTemplate websocketMessaging;
     
@@ -36,7 +36,7 @@ public class ChatRoomController {
     
     @ResponseBody
     @RequestMapping(value={"/chatroom/messages"})
-    public List<Message> getMessages() {
+    public List<ChatMessage> getMessages() {
         return messages.findAll();
     }
 
@@ -45,7 +45,7 @@ public class ChatRoomController {
     public void sendMessage(@RequestBody String text) {
         String username = ((User)SecurityContextHolder.getContext()
                 .getAuthentication().getPrincipal()).getUserName();
-        Message message = messages.add(new Message(username, new Date(), text));
+        ChatMessage message = messages.add(new ChatMessage(username, new Date(), text));
         websocketMessaging.convertAndSend("/topic/chat", message);
     }
 
@@ -55,8 +55,8 @@ public class ChatRoomController {
         String username = ((User)SecurityContextHolder.getContext()
                 .getAuthentication().getPrincipal()).getUserName();
         
-        Message mDel = null;
-        for(Message m : messages.findAll()) {
+        ChatMessage mDel = null;
+        for(ChatMessage m : messages.findAll()) {
             if (m.getId() != id) {
                 continue;
             }

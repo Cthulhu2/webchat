@@ -3,7 +3,7 @@ package org.example.cthulhu.webchat.dao;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import org.example.cthulhu.webchat.entities.Message;
+import org.example.cthulhu.webchat.entities.ChatMessage;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Repository;
 
@@ -13,14 +13,14 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 @Scope("singleton")
-public class MessageRepository {
+public class ChatMessageRepository {
 
     public static final int MESSAGE_LIMIT = 20;
     private int idSequence = 0;
     
-    private final List<Message> messageList = new ArrayList<>(MESSAGE_LIMIT * 2);
+    private final List<ChatMessage> messageList = new ArrayList<>(MESSAGE_LIMIT * 2);
     
-    public synchronized Message add(Message message) {
+    public synchronized ChatMessage add(ChatMessage message) {
         if (message == null) {
             throw new IllegalArgumentException("message is null");
         }
@@ -35,7 +35,7 @@ public class MessageRepository {
         return message;
     }
     
-    public synchronized void remove(Message message) {
+    public synchronized void remove(ChatMessage message) {
         if (message == null) {
             throw new IllegalArgumentException("message is null");
         }
@@ -44,7 +44,7 @@ public class MessageRepository {
         }
     }
     
-    public synchronized List<Message> findAll() {
+    public synchronized List<ChatMessage> findAll() {
         int count = Math.min(messageList.size(), MESSAGE_LIMIT);
         return Collections.unmodifiableList(messageList.subList(
                 messageList.size() - count,

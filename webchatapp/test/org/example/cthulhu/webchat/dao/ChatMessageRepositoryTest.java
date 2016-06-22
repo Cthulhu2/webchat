@@ -2,7 +2,7 @@ package org.example.cthulhu.webchat.dao;
 
 import java.util.Date;
 import java.util.List;
-import org.example.cthulhu.webchat.entities.Message;
+import org.example.cthulhu.webchat.entities.ChatMessage;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -14,9 +14,9 @@ import static org.junit.Assert.*;
  *
  * @author Cthulhu
  */
-public class MessageRepositoryTest {
+public class ChatMessageRepositoryTest {
     
-    public MessageRepositoryTest() {
+    public ChatMessageRepositoryTest() {
     }
     
     @BeforeClass
@@ -38,7 +38,7 @@ public class MessageRepositoryTest {
     @Test
     public void testEmpty() {
         System.out.println("empty");
-        MessageRepository instance = new MessageRepository();
+        ChatMessageRepository instance = new ChatMessageRepository();
         assertEquals(0, instance.findAll().size());        
     }
     
@@ -48,9 +48,9 @@ public class MessageRepositoryTest {
     @Test
     public void testAdd() {
         System.out.println("add");
-        MessageRepository instance = new MessageRepository();
+        ChatMessageRepository instance = new ChatMessageRepository();
         //
-        Message message = new Message("user", new Date(), "messageText");
+        ChatMessage message = new ChatMessage("user", new Date(), "messageText");
         instance.add(message);
         assertEquals(message, instance.findAll().get(0));
         //
@@ -61,18 +61,18 @@ public class MessageRepositoryTest {
     @Test
     public void testAddSame() {
         System.out.println("add same");
-        MessageRepository instance = new MessageRepository();
+        ChatMessageRepository instance = new ChatMessageRepository();
         //
         Date timestamp = new Date();
-        instance.add(new Message("user", timestamp, "messageText"));
-        instance.add(new Message("user", timestamp, "messageText"));
+        instance.add(new ChatMessage("user", timestamp, "messageText"));
+        instance.add(new ChatMessage("user", timestamp, "messageText"));
         assertEquals(1, instance.findAll().size());
     }
     
     @Test
     public void testAddNullable() {
         System.out.println("add nullable");
-        MessageRepository instance = new MessageRepository();
+        ChatMessageRepository instance = new ChatMessageRepository();
         try {
             instance.add(null);
             fail("null passed");
@@ -87,11 +87,11 @@ public class MessageRepositoryTest {
     @Test
     public void testRemove() {
         System.out.println("remove");
-        MessageRepository instance = new MessageRepository();
+        ChatMessageRepository instance = new ChatMessageRepository();
         //
-        Message message0 = new Message("user0", new Date(), "messageText");
-        Message message1 = new Message("user1", new Date(), "messageText");
-        Message message2 = new Message("user2", new Date(), "messageText");
+        ChatMessage message0 = new ChatMessage("user0", new Date(), "messageText");
+        ChatMessage message1 = new ChatMessage("user1", new Date(), "messageText");
+        ChatMessage message2 = new ChatMessage("user2", new Date(), "messageText");
         //
         instance.add(message0);
         instance.remove(message0);
@@ -106,7 +106,7 @@ public class MessageRepositoryTest {
     @Test
     public void testRemoveNullable() {
         System.out.println("remove nullable");
-        MessageRepository instance = new MessageRepository();
+        ChatMessageRepository instance = new ChatMessageRepository();
         try {
             instance.remove(null);
             fail("null passed");
@@ -121,16 +121,16 @@ public class MessageRepositoryTest {
     @Test
     public void testFindAll() {
         System.out.println("findAll");
-        MessageRepository instance = new MessageRepository();
+        ChatMessageRepository instance = new ChatMessageRepository();
         //
-        for(int i = 0; i < MessageRepository.MESSAGE_LIMIT; i++) {
-            instance.add(new Message("user" + i, new Date(), "messageText"));
+        for(int i = 0; i < ChatMessageRepository.MESSAGE_LIMIT; i++) {
+            instance.add(new ChatMessage("user" + i, new Date(), "messageText"));
         }
         //
-        Message message = new Message("user", new Date(), "messageText");
+        ChatMessage message = new ChatMessage("user", new Date(), "messageText");
         instance.add(message);
-        List<Message> result = instance.findAll();
-        assertEquals(MessageRepository.MESSAGE_LIMIT, result.size());
-        assertEquals(message, result.get(MessageRepository.MESSAGE_LIMIT - 1));
+        List<ChatMessage> result = instance.findAll();
+        assertEquals(ChatMessageRepository.MESSAGE_LIMIT, result.size());
+        assertEquals(message, result.get(ChatMessageRepository.MESSAGE_LIMIT - 1));
     }    
 }

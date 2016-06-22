@@ -8,7 +8,7 @@ import java.util.Objects;
  *
  * @author Cthulhu
  */
-public class Message
+public class ChatMessage
         implements Serializable {
     
     private int id;
@@ -16,7 +16,7 @@ public class Message
     private Date date;
     private String text;
     
-    public Message(String userName, Date date, String text) {
+    public ChatMessage(String userName, Date date, String text) {
         this.userName = userName;
         this.date = date;
         this.text = text;
@@ -74,7 +74,7 @@ public class Message
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Message other = (Message) obj;
+        final ChatMessage other = (ChatMessage) obj;
         if (!Objects.equals(this.userName, other.userName)) {
             return false;
         }
