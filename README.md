@@ -9,3 +9,4 @@ http://mvnrepository.com/artifact/org.springframework.security/spring-security-t
 http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core/2.7.5
 http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind/2.7.5
 http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations/2.7.5
+http://logging.apache.org/log4j/1.2/download.html
