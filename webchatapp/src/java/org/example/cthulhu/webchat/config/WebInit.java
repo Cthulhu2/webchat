@@ -1,5 +1,7 @@
 package org.example.cthulhu.webchat.config;
 
+import javax.servlet.ServletContext;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 /**
@@ -24,5 +26,11 @@ public class WebInit
     protected String[] getServletMappings() {
         return new String[]{
             "/"};
+    }
+    
+    @Override
+    protected void registerDispatcherServlet(ServletContext servletContext) {
+        super.registerDispatcherServlet(servletContext);
+        servletContext.addListener(new HttpSessionEventPublisher());
     }
 }

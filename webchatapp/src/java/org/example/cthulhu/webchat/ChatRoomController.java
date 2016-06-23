@@ -2,6 +2,7 @@ package org.example.cthulhu.webchat;
 
 import java.util.Date;
 import java.util.List;
+import org.apache.log4j.Logger;
 import org.example.cthulhu.webchat.dao.ChatMessageRepository;
 import org.example.cthulhu.webchat.entities.ChatMessage;
 import org.example.cthulhu.webchat.entities.User;
@@ -24,6 +25,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Controller
 public class ChatRoomController {
 
+    private static final Logger log = Logger.getLogger(ChatRoomController.class);
+    
     @Autowired
     private ChatMessageRepository messages;
     @Autowired
@@ -47,6 +50,7 @@ public class ChatRoomController {
                 .getAuthentication().getPrincipal()).getUserName();
         ChatMessage message = messages.add(new ChatMessage(username, new Date(), text));
         websocketMessaging.convertAndSend("/topic/chat", message);
+        log.info(String.format("sendMessage %s", message));
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -55,13 +59,16 @@ public class ChatRoomController {
         String username = ((User) SecurityContextHolder.getContext()
                 .getAuthentication().getPrincipal()).getUserName();
 
-        ChatMessage mDel = messages.findById(id);
-        if (mDel != null) {
-            if (!username.equals(mDel.getUserName())) {
+        ChatMessage message = messages.findById(id);
+        if (message != null) {
+            if (!username.equals(message.getUserName())) {
+                log.warn(String.format("removeMessage User '%s' is not owner the %s",
+                        username, message));
                 throw new BadCredentialsException("Only owner can remove this message");
             }
-            messages.remove(mDel);
-            websocketMessaging.convertAndSend("/topic/remove", mDel.getId());
+            messages.remove(message);
+            websocketMessaging.convertAndSend("/topic/remove", message.getId());
+            log.info(String.format("removeMessage %s", message));
         }
     }
 }
