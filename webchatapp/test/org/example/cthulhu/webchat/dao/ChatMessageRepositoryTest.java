@@ -9,7 +9,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-
+import static org.example.cthulhu.webchat.dao.ChatMessageRepository.HISTORY_LIMIT;
+import static org.example.cthulhu.webchat.dao.ChatMessageRepository.TO_FETCH_LIMIT;
 /**
  *
  * @author Cthulhu
@@ -59,6 +60,20 @@ public class ChatMessageRepositoryTest {
     }
     
     @Test
+    public void testAddHistoryLimit() {
+        System.out.println("add history limit");
+        ChatMessageRepository instance = new ChatMessageRepository();
+        //
+        for(int i = 0; i < HISTORY_LIMIT; i++) {
+            instance.add(new ChatMessage("user" + i, new Date(), "text"));
+        }
+        instance.add(new ChatMessage("user", new Date(), "one more"));
+        //
+        ChatMessage message = instance.findById(0);
+        assertNull(message);
+    }
+    
+    @Test
     public void testAddSame() {
         System.out.println("add same");
         ChatMessageRepository instance = new ChatMessageRepository();
@@ -104,6 +119,21 @@ public class ChatMessageRepositoryTest {
     }
     
     @Test
+    public void testRemoveHistoryLimit() {
+        System.out.println("remove history limit");
+        ChatMessageRepository instance = new ChatMessageRepository();
+        //
+        for(int i = 0; i < HISTORY_LIMIT + 100; i++) {
+            instance.add(new ChatMessage("user" + i, new Date(), "text"));
+        }
+        //
+        ChatMessage message = instance.findById(HISTORY_LIMIT - 1);
+        instance.remove(message);
+        message = instance.findById(HISTORY_LIMIT - 1);
+        assertNull(message);
+    }
+    
+    @Test
     public void testRemoveNullable() {
         System.out.println("remove nullable");
         ChatMessageRepository instance = new ChatMessageRepository();
@@ -123,14 +153,29 @@ public class ChatMessageRepositoryTest {
         System.out.println("findAll");
         ChatMessageRepository instance = new ChatMessageRepository();
         //
-        for(int i = 0; i < ChatMessageRepository.MESSAGE_LIMIT; i++) {
+        for(int i = 0; i < TO_FETCH_LIMIT; i++) {
             instance.add(new ChatMessage("user" + i, new Date(), "messageText"));
         }
         //
         ChatMessage message = new ChatMessage("user", new Date(), "messageText");
         instance.add(message);
         List<ChatMessage> result = instance.findAll();
-        assertEquals(ChatMessageRepository.MESSAGE_LIMIT, result.size());
-        assertEquals(message, result.get(ChatMessageRepository.MESSAGE_LIMIT - 1));
-    }    
+        assertEquals(TO_FETCH_LIMIT, result.size());
+        assertEquals(message, result.get(TO_FETCH_LIMIT - 1)); // last add
+    }
+    
+    @Test
+    public void testFindById() {
+        System.out.println("findById");
+        ChatMessageRepository instance = new ChatMessageRepository();
+        //
+        // sequenceId also from 0, so
+        for(int i = 0; i < 10; i++) {
+            instance.add(new ChatMessage("user" + i, new Date(), "messageText"));
+        }
+        //
+        ChatMessage message = instance.findById(8);
+        assertNotNull(message);
+        assertEquals("user8", message.getUserName());
+    }
 }

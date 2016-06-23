@@ -15,21 +15,24 @@ import org.springframework.stereotype.Repository;
 @Scope("singleton")
 public class ChatMessageRepository {
 
-    public static final int MESSAGE_LIMIT = 20;
+    public static final int TO_FETCH_LIMIT = 20;
+    public static final int HISTORY_LIMIT = 1000;
     private int idSequence = 0;
     
-    private final List<ChatMessage> messageList = new ArrayList<>(MESSAGE_LIMIT * 2);
+    private final List<ChatMessage> messageList = new ArrayList<>(HISTORY_LIMIT);
     
     public synchronized ChatMessage add(ChatMessage message) {
         if (message == null) {
             throw new IllegalArgumentException("message is null");
         }
         if (!messageList.contains(message)) {
-            idSequence++;
-            message.setId(idSequence);
+            message.setId(idSequence++);
             messageList.add(message);
-            if (messageList.size() >= MESSAGE_LIMIT * 2) {
-                messageList.subList(0, MESSAGE_LIMIT - 1).clear();
+            if (messageList.size() >= HISTORY_LIMIT) {
+                messageList.subList(0, messageList.size() - HISTORY_LIMIT).clear();
+            }
+            if (idSequence == Integer.MAX_VALUE - 1) {
+                idSequence = 0;
             }
         }
         return message;
@@ -45,9 +48,18 @@ public class ChatMessageRepository {
     }
     
     public synchronized List<ChatMessage> findAll() {
-        int count = Math.min(messageList.size(), MESSAGE_LIMIT);
+        int count = Math.min(messageList.size(), TO_FETCH_LIMIT);
         return Collections.unmodifiableList(messageList.subList(
                 messageList.size() - count,
                 messageList.size()));
+    }
+    
+    public synchronized ChatMessage findById(int id) {
+        for(ChatMessage message : messageList) {
+            if (message.getId() == id) {
+                return message;
+            }
+        }
+        return null;
     }
 }
