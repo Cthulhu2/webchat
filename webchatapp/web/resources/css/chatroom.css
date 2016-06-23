@@ -58,3 +58,8 @@ html, body {
     float:left;
     overflow-y:scroll;
 }
+
+.deleted_message {
+    font-style: italic;
+    color: red;
+}

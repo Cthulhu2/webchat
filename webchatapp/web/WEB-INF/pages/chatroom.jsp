@@ -42,9 +42,16 @@
                 </div>
                 <div class="chat-room-content" scroll-glue>
                     <div ng-repeat="m in ctrl.messages">
+                        <button type="button" class="close"
+                                ng-click="ctrl.deleteMessage(m.id)"
+                                ng-if="(m.userName === '<sec:authentication property="principal.userName" />')
+                                                            && (m.id !== -1)">
+                            &times;
+                        </button>
                         [<span ng-bind="m.date | date:'dd.MM.yyyy HH:mm:ss'"></span>]
                         <b><span ng-bind="m.userName"></span>:</b>
-                        <pre><span ng-bind="m.text"></span></pre>
+                        <pre ng-if="(m.id >= 0)"><span ng-bind="m.text"></span></pre>
+                        <pre ng-if="(m.id == -1)"><span class="deleted_message"><spring:message code="chatroom.lbl.deleted.message" /></span></pre>
                     </div>
                 </div>
                 <div class="panel-footer chat-room-footer">
