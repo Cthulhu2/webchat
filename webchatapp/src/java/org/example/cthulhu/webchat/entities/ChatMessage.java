@@ -55,6 +55,15 @@ public class ChatMessage
     }
 
     @Override
+    public String toString() {
+        return "ChatMessage{" +
+                "id=" + id +
+                ", userName=" + userName +
+                ", text=" + text + '}';
+    }
+
+    
+    @Override
     public int hashCode() {
         int hash = 3;
         hash = 29 * hash + Objects.hashCode(this.userName);
