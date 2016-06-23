@@ -2,7 +2,9 @@
 
 App.factory("ChatService", function ($q, $timeout) {
 
-    var service = {}, listener = $q.defer(), socket = {
+    var service = {};
+    var messageListener = $q.defer(), removeListener = $q.defer();
+    var socket = {
         client: null,
         stomp: null
     };
@@ -10,9 +12,13 @@ App.factory("ChatService", function ($q, $timeout) {
     service.RECONNECT_TIMEOUT = 30000;
     service.SOCKET_URL = "/webchatapp/chatroom/chat";
     service.CHAT_TOPIC = "/topic/chat";
+    service.REMOVE_TOPIC = "/topic/remove";
 
-    service.receive = function () {
-        return listener.promise;
+    service.receiveMessage = function () {
+        return messageListener.promise;
+    };
+    service.receiveRemove = function () {
+        return removeListener.promise;
     };
 
     var reconnect = function () {
@@ -32,7 +38,10 @@ App.factory("ChatService", function ($q, $timeout) {
 
     var startListener = function () {
         socket.stomp.subscribe(service.CHAT_TOPIC, function (data) {
-            listener.notify(getMessage(data.body));
+            messageListener.notify(getMessage(data.body));
+        });
+        socket.stomp.subscribe(service.REMOVE_TOPIC, function (data) {
+            removeListener.notify(JSON.parse(data.body)); // int
         });
     };
 
@@ -75,7 +84,7 @@ App.factory('ChatroomService', ['$http', '$q', function ($http, $q) {
                         );
             },
             deleteMessage: function (id) {
-                return $http.delete('chatroom/remove', id)
+                return $http.post('chatroom/remove', id)
                         .then(
                                 function (response) {
                                     return response.data;
