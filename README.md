@@ -3,7 +3,7 @@ Example of a JEE multiuser web-chat with using AngularJS, Bootstrap, JQuery and 
 
 # Building
 This is a Netbeans 8.1 project with no maven and gradle.
-So, probably, you have to download some dependency libraries. Put they into the 'lib' project directory.
+So, probably, you have to download some dependency libraries. Put them into the 'lib' project directory.
 
 - [Spring Security Core 4.0.1] (http://mvnrepository.com/artifact/org.springframework.security/spring-security-core/4.0.1.RELEASE)
 - [Spring Security Web 4.0.1] (http://mvnrepository.com/artifact/org.springframework.security/spring-security-web/4.0.1.RELEASE)
@@ -18,4 +18,4 @@ So, probably, you have to download some dependency libraries. Put they into the 
 Tested with Tomcat.v8.0.27.
 
 # ToDo
-- Migrate project on Gradle.
+- Migrate project to Gradle.
